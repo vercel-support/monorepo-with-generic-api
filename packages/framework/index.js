@@ -1,4 +1,4 @@
 export function newHelper() {
-  console.log("Framework Function");
-  return {};
+  console.log("Framework Function")
+  return {}
 }
