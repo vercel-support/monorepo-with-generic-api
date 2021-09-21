@@ -1,29 +1,33 @@
-# Vercel Monorepo
+## Monorepo Structure:
 
-#### Create New Projects
+3 projects deployed and 1 common framework
 
-- `yarn run create <PROJECT_NAME>`
+* `packages/docs`: `Next.js` project standalone
+* `packages/front`: `Next.js` project that includes the helper function outside it's root folder in `packages/framework` - Look at developer console in the deployed root of the site
+* `packages/py-api`: Python API - load `yourdeploylink/api/date.py`
 
-## `packages` folder
+## Setting this up with Vercel CLI
 
-The `packages` folder contains both applications (aka Vercel projects) and modules.
+After you have cloned the repository locally, from the root folder, run `vercel link` 3 times.
 
-If the folder is a Vercel project then you'll need to add a [Ignore Build Step](https://vercel.com/docs/platform/projects#ignored-build-step) so changes to a project don't trigger a deployment to all projects. For example, for the `front` project the ignored build step would look like this:
+#### Link the `docs` project
 
-```bash
-git diff --quiet HEAD^ HEAD -- :/packages/front
-```
+* Run `vercel link` and then choose the name of your project such as `monorepo-docs`
+* choose all the default values except for root folder, use `./packages/docs`
+* Make sure the framework for the project in the project settings in the Vercel dashboard is set to  `Next.js`
+* Run `vercel --prod` to deploy this project
 
-Now, each change that happens outside `packages/front` won't create a new deployment.
+#### Link the `front` project
 
-> Follow the docs for [Ignore Build Step](https://vercel.com/docs/platform/projects#ignored-build-step) if you don't know where to add the command above.
+* Run `vercel link` and then choose the name of your project such as `monorepo-front`
+* choose all the default values except for root folder, use `./packages/front`
+* Make sure the framework for the project in the project settings in the Vercel dashboard is set to  `Next.js`
+* Run `vercel --prod` to deploy this project
+* To check if the including of the helper framework in `./packages/framework` is working, go to the deploy http link for this project and open the developer console.
 
-If `packages/front` has a dependency on a module called `packages/framework` then the command would change to:
+#### Link the `api` project
 
-```bash
-git diff --quiet HEAD^ HEAD -- :/packages/front :/packages/framework
-```
-
-Now, if the `framework` module changes, a new deployment for the `front` project will be created, and for other projects that may also depend on it.
-
----
+* Run `vercel link` and then choose the name of your project such as `monorepo-api`
+* choose all the default values except for root folder, use `./packages/py-api`
+* Run `vercel --prod` to deploy this project
+* Go to `project-deploy-link/api/date.py` to see the current returned date
